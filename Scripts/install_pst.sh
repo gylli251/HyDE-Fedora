@@ -61,7 +61,7 @@ fi
 "${scrDir}/restore_shl.sh"
 
 # flatpak
-if ! pkg_installed flatpak; then
+if ! is_fedora && ! pkg_installed flatpak; then
     print_log -r "[FLATPAK]" -b "list :: " "flatpak application"
     awk -F '#' '$1 != "" {print "["++count"]", $1}' "${scrDir}/extra/custom_flat.lst"
     prompt_timer 60 "Install these flatpaks? [Y/n]"

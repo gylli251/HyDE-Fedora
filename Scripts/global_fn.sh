@@ -23,7 +23,7 @@ export shlList
 pkg_installed() {
     local PkgIn=$1
 
-    if pacman -Qi "${PkgIn}" &>/dev/null; then
+    if pacman -Qi "${PkgIn}" &>/dev/null || rpm -q "${PkgIn}" &>/dev/null; then
         return 0
     else
         return 1
@@ -177,5 +177,13 @@ print_log() {
         tee >(sed 's/\x1b\[[0-9;]*m//g' >>"${logFile}")
     else
         cat
+    fi
+}
+
+is_fedora() {
+    if [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ] || [ -f /etc/centos-release ]; then
+        return 0
+    else
+        return 1
     fi
 }

@@ -219,7 +219,11 @@ EOF
     #--------------------------------#
     # install packages from the list #
     #--------------------------------#
-    [ ${flg_DryRun} -eq 1 ] || "${scrDir}/install_pkg.sh" "${scrDir}/install_pkg.lst"
+    if is_fedora; then
+        [ ${flg_DryRun} -eq 1 ] || "${scrDir}/extra/install_rpm.sh" "${scrDir}/install_pkg.lst"
+    else
+        [ ${flg_DryRun} -eq 1 ] || "${scrDir}/install_pkg.sh" "${scrDir}/install_pkg.lst"
+    fi
 fi
 
 #---------------------------#

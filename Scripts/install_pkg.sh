@@ -20,6 +20,7 @@ chk_list "aurhlpr" "${aurList[@]}"
 listPkg="${1:-"${scrDir}/pkg_core.lst"}"
 archPkg=()
 aurhPkg=()
+rpmPkg=()
 ofs=$IFS
 IFS='|'
 
@@ -65,6 +66,9 @@ while read -r pkg deps; do
     elif aur_available "${pkg}"; then
         print_log -b "[queue] " -g "aur" -b "::" "${pkg}"
         aurhPkg+=("${pkg}")
+    elif rpm -q "${pkg}" &>/dev/null; then
+        print_log -b "[queue] " -g "rpm" -b "::" "${pkg}"
+        rpmPkg+=("${pkg}")
     else
         print_log -r "[error] " "unknown package ${pkg}..."
     fi
@@ -81,5 +85,10 @@ if [ "${flg_DryRun}" -ne 1 ]; then
     if [[ ${#aurhPkg[@]} -gt 0 ]]; then
         print_log -b "[install] " "aur packages..."
         "${aurhlpr}" ${use_default:+"$use_default"} -S "${aurhPkg[@]}"
+    fi
+
+    if [[ ${#rpmPkg[@]} -gt 0 ]]; then
+        print_log -b "[install] " "rpm packages..."
+        sudo dnf install -y "${rpmPkg[@]}"
     fi
 fi

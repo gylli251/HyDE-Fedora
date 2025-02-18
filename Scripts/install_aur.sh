@@ -11,6 +11,12 @@ if ! source "${scrDir}/global_fn.sh"; then
     exit 1
 fi
 
+# Check if the system is Fedora or RPM-based
+if is_fedora; then
+    print_log -sec "AUR" -stat "skipped" "AUR helper installation on Fedora or RPM-based system"
+    exit 0
+fi
+
 # shellcheck disable=SC2154
 if chk_list "aurhlpr" "${aurList[@]}"; then
     print_log -sec "AUR" -stat "detected" "${aurhlpr}"

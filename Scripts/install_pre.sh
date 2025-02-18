@@ -13,6 +13,12 @@ fi
 
 flg_DryRun=${flg_DryRun:-0}
 
+# Check if the system is Fedora or RPM-based
+if is_fedora; then
+    print_log -sec "CHAOTIC-AUR" -stat "skipped" "Chaotic AUR installation on Fedora or RPM-based system"
+    exit 0
+fi
+
 # grub
 if pkg_installed grub && [ -f /boot/grub/grub.cfg ]; then
     print_log -sec "bootloader" -stat "detected" "grub..."
