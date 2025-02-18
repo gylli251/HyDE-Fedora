@@ -15,8 +15,12 @@ fi
 flg_DryRun=${flg_DryRun:-0}
 export log_section="package"
 
-"${scrDir}/install_aur.sh" "${getAur}" 2>&1
-chk_list "aurhlpr" "${aurList[@]}"
+# Check if the system is Fedora or RPM-based
+if ! is_fedora; then
+    "${scrDir}/install_aur.sh" "${getAur}" 2>&1
+    chk_list "aurhlpr" "${aurList[@]}"
+fi
+
 listPkg="${1:-"${scrDir}/pkg_core.lst"}"
 archPkg=()
 aurhPkg=()
